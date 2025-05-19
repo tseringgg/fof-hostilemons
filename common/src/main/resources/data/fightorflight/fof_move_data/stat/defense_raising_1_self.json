@@ -1,0 +1,13 @@
+{
+  "type": "stat",
+  "target": "self",
+  "triggerEvent": "on_hit",
+  "chance": 1.0,
+  "canActivateSheerForce": true,
+  "name": "defense",
+  "move_list": [
+    "psyshieldbash",
+    "skullbash"
+  ],
+  "stage": 1
+}

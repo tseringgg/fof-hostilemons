@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "me.rufia.fightorflight.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "RendererInjector",
+    "MinecraftClientInject"
+  ],
+  "mixins": [
+    "PokemonEntityMixin",
+    "PokemonServerDelegateMixin",
+    "PokemonFollowOwnerGoalMixin",
+    "EmptyPokeBallEntityMixin",
+    "PokemonEntityCompanionMixin",
+    "LivingEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
