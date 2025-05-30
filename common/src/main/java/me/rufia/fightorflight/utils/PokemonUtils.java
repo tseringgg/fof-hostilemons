@@ -15,6 +15,7 @@ import com.cobblemon.mod.common.pokemon.evolution.progress.UseMoveEvolutionProgr
 import me.rufia.fightorflight.CobblemonFightOrFlight;
 import me.rufia.fightorflight.PokemonInterface;
 import me.rufia.fightorflight.data.movedata.MoveData;
+import me.rufia.fightorflight.entity.rangedAttackOutOfBattle.*;
 import me.rufia.fightorflight.item.component.PokeStaffComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -237,6 +238,8 @@ public class PokemonUtils {
             }
         }
     }
+
+
 
     public static void setHurtByPlayer(PokemonEntity pokemonEntity, Entity target) {
         Entity owner = pokemonEntity.getOwner();

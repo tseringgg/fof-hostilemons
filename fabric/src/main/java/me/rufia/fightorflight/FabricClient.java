@@ -6,11 +6,8 @@ import me.rufia.fightorflight.client.hud.moveslots.MoveSlotsRender;
 import me.rufia.fightorflight.client.keybinds.KeybindFightOrFlight;
 import me.rufia.fightorflight.client.model.HostileMonsModelLayers;
 import me.rufia.fightorflight.client.model.PokemonFireballModel;
-import me.rufia.fightorflight.client.renderer.PokemonFireballRenderer;
+import me.rufia.fightorflight.client.renderer.*;
 import me.rufia.fightorflight.entity.EntityFightOrFlight;
-import me.rufia.fightorflight.client.renderer.PokemonArrowRenderer;
-import me.rufia.fightorflight.client.renderer.PokemonBulletRenderer;
-import me.rufia.fightorflight.client.renderer.PokemonTracingBulletRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -30,6 +27,7 @@ public final class FabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityFightOrFlight.BULLET.get(), PokemonBulletRenderer::new);
         EntityRendererRegistry.register(EntityFightOrFlight.POKEMON_FIREBALL.get(), PokemonFireballRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(HostileMonsModelLayers.FIREBALL, PokemonFireballModel::createBodyLayer);
+        EntityRendererRegistry.register(EntityFightOrFlight.POKEMON_FLAMETHROWER_PROJECTILE.get(), InvisibleFlamethrowerProjectileRenderer::new);
 for (KeyMapping keyMapping : KeybindFightOrFlight.bindings) {
             KeyBindingHelper.registerKeyBinding(keyMapping);
         }

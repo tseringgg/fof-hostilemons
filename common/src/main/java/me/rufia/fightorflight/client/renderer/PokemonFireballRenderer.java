@@ -52,9 +52,6 @@ public class PokemonFireballRenderer extends EntityRenderer<PokemonFireball> {
         // If your model is a sphere, you might not need rotation, comment out the above lines.
         // If rendering a sprite, you'd use billboarding rotations instead.
 
-        // --- Remove Wild Spinning from Template ---
-        // The complex Axis rotations based on tickCount are removed.
-
         // --- Scaling ---
         // Adjust scale as needed for your model/texture size
         float scale = 1.0f; // Example scale factor
@@ -71,32 +68,6 @@ public class PokemonFireballRenderer extends EntityRenderer<PokemonFireball> {
         // Render the main model
         // Apply a color tint if desired (e.g., full white = 0xFFFFFFFF)
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF); // Use default white tint
-
-
-        // --- Optional: Second Render Pass for Glow (like template) ---
-        /*
-        if (true) { // Condition to enable glow
-            poseStack.pushPose(); // Isolate transformations for glow
-            // Slightly larger scale for the glow effect
-            float glowScale = 1.2f;
-            poseStack.scale(glowScale, glowScale, glowScale);
-
-            // Use a translucent or additive render type for the glow
-             VertexConsumer glowVertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(FIREBALL_TEXTURE_LOCATION));
-             // OR Try an additive blend for a brighter glow:
-             // VertexConsumer glowVertexConsumer = buffer.getBuffer(RenderType.energySwirl(getTextureLocation(entity), 0, 0)); // Experiment with this
-
-            // Render the model again for the glow
-            // Use a specific color for the glow (e.g., semi-transparent orange)
-            // int glowColor = FastColor.ARGB32.color(150, 255, 150, 0); // Alpha, Red, Green, Blue
-             int glowColor = 0x90FF9600; // Example: Semi-transparent orange ARGB hex
-
-            this.model.renderToBuffer(poseStack, glowVertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, glowColor);
-
-            poseStack.popPose(); // Restore transformations
-        }
-        */
-
 
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight); // Call superclass render

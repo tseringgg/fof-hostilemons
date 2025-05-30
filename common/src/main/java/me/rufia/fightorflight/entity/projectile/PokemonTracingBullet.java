@@ -58,6 +58,14 @@ public class PokemonTracingBullet extends ExplosivePokemonProjectile {
         this.currentMoveDirection = Direction.UP;
         this.selectNextMoveDirection(axis);
     }
+    public PokemonTracingBullet(Level level, LivingEntity shooter, Entity finalTarget) {
+        super(EntityFightOrFlight.TRACING_BULLET.get(), level);
+        initPosition(shooter);
+        setOwner(shooter);
+        this.finalTarget = finalTarget;
+        this.currentMoveDirection = Direction.UP;
+        this.selectNextMoveDirection(shooter.getDirection().getAxis());
+    }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {

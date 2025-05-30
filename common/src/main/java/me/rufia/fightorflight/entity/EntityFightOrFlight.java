@@ -4,12 +4,10 @@ import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import me.rufia.fightorflight.CobblemonFightOrFlight;
-import me.rufia.fightorflight.entity.projectile.PokemonArrow;
-import me.rufia.fightorflight.entity.projectile.PokemonBullet;
-import me.rufia.fightorflight.entity.projectile.PokemonFireball;
-import me.rufia.fightorflight.entity.projectile.PokemonTracingBullet;
+import me.rufia.fightorflight.entity.projectile.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -30,6 +28,9 @@ public interface EntityFightOrFlight {
             EntityType.Builder.<PokemonBullet>of(PokemonBullet::new,MobCategory.MISC).sized(0.3125f,0.3125f));
     RegistrySupplier<EntityType<PokemonFireball>> POKEMON_FIREBALL = registerProjectile("pokemon_fireball_projectile",
             EntityType.Builder.<PokemonFireball>of(PokemonFireball::new, MobCategory.MISC).sized(1.0f, 1.0f));
+    RegistrySupplier<EntityType<InvisibleFlamethrowerHitProjectile>> POKEMON_FLAMETHROWER_PROJECTILE = registerProjectile("pokemon_flamethrower_projectile",
+            EntityType.Builder.<InvisibleFlamethrowerHitProjectile>of(InvisibleFlamethrowerHitProjectile::new,
+                    MobCategory.MISC).sized(1.0f, 1.0f));
 
     static void bootstrap() {
         ENTITY_TYPES.register();

@@ -1,19 +1,27 @@
 package me.rufia.fightorflight.entity;
 
+import com.bedrockk.molang.runtime.MoLangRuntime;
 import com.cobblemon.mod.common.CobblemonItems;
+import com.cobblemon.mod.common.api.molang.MoLangFunctions;
 import com.cobblemon.mod.common.api.moves.Move;
+import com.cobblemon.mod.common.api.moves.MoveTemplate;
+import com.cobblemon.mod.common.api.moves.Moves;
+import com.cobblemon.mod.common.api.moves.animations.ActionEffectContext;
+import com.cobblemon.mod.common.api.moves.animations.ActionEffectTimeline;
+import com.cobblemon.mod.common.api.moves.animations.TargetsProvider;
+import com.cobblemon.mod.common.api.moves.animations.UsersProvider;
 import com.cobblemon.mod.common.api.moves.categories.DamageCategories;
 import com.cobblemon.mod.common.api.types.ElementalType;
 import com.cobblemon.mod.common.api.types.ElementalTypes;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import me.rufia.fightorflight.CobblemonFightOrFlight;
 import me.rufia.fightorflight.PokemonInterface;
 import me.rufia.fightorflight.data.movedata.MoveData;
 import me.rufia.fightorflight.entity.projectile.AbstractPokemonProjectile;
-import me.rufia.fightorflight.entity.projectile.PokemonArrow;
-import me.rufia.fightorflight.entity.projectile.PokemonBullet;
-import me.rufia.fightorflight.entity.projectile.PokemonTracingBullet;
+import me.rufia.fightorflight.entity.rangedAttackOutOfBattle.PokemonRangedAttack;
 import me.rufia.fightorflight.utils.PokemonMultipliers;
 import me.rufia.fightorflight.utils.PokemonUtils;
 import me.rufia.fightorflight.utils.TypeEffectiveness;
@@ -33,6 +41,7 @@ import net.minecraft.world.level.Level;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class PokemonAttackEffect {
     public static SimpleParticleType getParticleFromType(String name) {
@@ -515,61 +524,6 @@ public class PokemonAttackEffect {
         double f = target.getZ() - pokemonEntity.getZ();
         float velocity = 0.5f; // 1.6f is default
         projectile.accurateShoot(d, e, f, velocity, 0.1f);
-    }
-
-    public static void pokemonPerformRangedAttack(PokemonEntity pokemonEntity, LivingEntity target) {
-        Move move = PokemonUtils.getRangeAttackMove(pokemonEntity);
-        AbstractPokemonProjectile bullet;
-        PokemonUtils.sendAnimationPacket(pokemonEntity, "special");
-        LivingEntity livingEntity = (LivingEntity) pokemonEntity;
-        if (move != null) {
-            String moveName = move.getName();
-            CobblemonFightOrFlight.LOGGER.info("Performing Ranged Attack:" + moveName);
-            Random rand = new Random();
-            boolean b1 = Arrays.stream(CobblemonFightOrFlight.moveConfig().single_bullet_moves).toList().contains(moveName);
-            boolean b2 = Arrays.stream(CobblemonFightOrFlight.moveConfig().multiple_bullet_moves).toList().contains(moveName);
-            boolean b3 = Arrays.stream(CobblemonFightOrFlight.moveConfig().single_tracing_bullet_moves).toList().contains(moveName);
-            boolean b4 = Arrays.stream(CobblemonFightOrFlight.moveConfig().multiple_tracing_bullet_moves).toList().contains(moveName);
-            boolean b5 = Arrays.stream(CobblemonFightOrFlight.moveConfig().single_beam_moves).toList().contains(moveName);
-            boolean b6 = PokemonUtils.isExplosiveMove(moveName);
-            boolean b7 = Arrays.stream(CobblemonFightOrFlight.moveConfig().sound_based_moves).toList().contains(moveName);
-            boolean b8 = Arrays.stream(CobblemonFightOrFlight.moveConfig().magic_attack_moves).toList().contains(moveName);
-            if (b3 || b4) {
-                CobblemonFightOrFlight.LOGGER.info("Ranged Attack Type: Tracing Bullet Move");
-                for (int i = 0; i < (b3 ? 1 : rand.nextInt(3) + 1); ++i) {
-                    bullet = new PokemonTracingBullet(livingEntity.level(), pokemonEntity, target, livingEntity.getDirection().getAxis());
-                    addProjectileEntity(pokemonEntity, target, bullet, move);
-                }
-            } else if (b1 || b2) {
-                CobblemonFightOrFlight.LOGGER.info("Ranged Attack Type: Bullet Move");
-                for (int i = 0; i < (b1 ? 1 : rand.nextInt(3) + 1); ++i) {
-                    bullet = new PokemonBullet(livingEntity.level(), pokemonEntity, target);
-                    shootProjectileEntity(pokemonEntity, target, bullet);
-                    addProjectileEntity(pokemonEntity, target, bullet, move);
-                }
-            } else if (b5 || b7 || b8) {
-                CobblemonFightOrFlight.LOGGER.info("Ranged Attack Type: Single Beam, Sound Based, or Magic Attack");
-                if (!PokemonUtils.pokemonTryForceEncounter(pokemonEntity, target)) {
-                    boolean success = target.hurt(pokemonEntity.damageSources().mobAttack(pokemonEntity), PokemonAttackEffect.calculatePokemonDamage(pokemonEntity, target, move));
-                    PokemonUtils.setHurtByPlayer(pokemonEntity, target);
-                    PokemonAttackEffect.applyOnHitVisualEffect(pokemonEntity, target, move);
-                    applyPostEffect(pokemonEntity, target, move, success);
-                }
-                //applyTypeEffect(pokemonEntity, target);
-            } else if (b6) {
-                CobblemonFightOrFlight.LOGGER.info("Ranged Attack Type: Explosive");
-                //Should not be processed here.
-            } else {
-                CobblemonFightOrFlight.LOGGER.info("Ranged Attack Type: Other"); //
-                bullet = new PokemonArrow(livingEntity.level(), pokemonEntity, target);
-                shootProjectileEntity(pokemonEntity, target, bullet);
-                addProjectileEntity(pokemonEntity, target, bullet, move);
-            }
-        } else {
-            bullet = new PokemonArrow(livingEntity.level(), pokemonEntity, target);
-            shootProjectileEntity(pokemonEntity, target, bullet);
-            addProjectileEntity(pokemonEntity, target, bullet);
-        }
     }
 
 
