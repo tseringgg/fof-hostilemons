@@ -28,6 +28,7 @@ loom {
 dependencies {
     modApi("net.fabricmc:fabric-loader:${project.properties["fabric_loader_version"]}")
     modApi("net.fabricmc.fabric-api:fabric-api:${project.properties["fabric_api_version"]}+$minecraftVersion")
+//    modImplementation(fabricApi.module("fabric-networking-api-v1", "${project.properties["fabric_api_version"]}"))
     modApi("dev.architectury:architectury-fabric:${project.properties["architectury_version"]}")
 
     "common"(project(":common", "namedElements")) { isTransitive = false }

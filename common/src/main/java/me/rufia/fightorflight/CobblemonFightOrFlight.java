@@ -9,9 +9,9 @@ import me.rufia.fightorflight.config.FightOrFlightMoveConfigModel;
 import me.rufia.fightorflight.config.FightOrFlightVisualEffectConfigModel;
 import me.rufia.fightorflight.goals.*;
 import me.rufia.fightorflight.net.CobblemonFightOrFlightNetwork;
+import me.rufia.fightorflight.api.NetworkHandler;
 import me.rufia.fightorflight.utils.PokemonUtils;
 import me.rufia.fightorflight.utils.TargetingWhitelist;
-import me.rufia.fightorflight.utils.listeners.BehaviorDataListener;
 import me.rufia.fightorflight.utils.listeners.MoveDataListener;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.ServiceLoader;
 import java.util.Set;
 
 public class CobblemonFightOrFlight {
@@ -41,6 +42,10 @@ public class CobblemonFightOrFlight {
     private static FightOrFlightMoveConfigModel moveConfig;
     private static FightOrFlightVisualEffectConfigModel visualEffectConfig;
     private static TriConsumer<PokemonEntity, Integer, Goal> goalAdder;
+    public static final ResourceLocation PLAY_INHALE_EFFECT_PACKET_ID = ResourceLocation.fromNamespaceAndPath(MODID, "play_inhale_effect");
+    public static final NetworkHandler NETWORK_HANDLER = ServiceLoader.load(NetworkHandler.class)
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("No NetworkHandler implementation found!"));
 
     public static FightOrFlightCommonConfigModel commonConfig() {
         return commonConfig;
@@ -82,6 +87,20 @@ public class CobblemonFightOrFlight {
         goalAdder.accept(pokemonEntity, 3, new PokemonGoToPosGoal(pokemonEntity, pursuitSpeed));
         goalAdder.accept(pokemonEntity, 3, new PokemonMeleeAttackGoal(pokemonEntity, pursuitSpeed, true));
         goalAdder.accept(pokemonEntity, 3, new PokemonRangedAttackGoal(pokemonEntity, pursuitSpeed, PokemonUtils.getAttackRadius()));
+        float airFollowSpeed = 1.2f * speedMultiplier; // Can be faster than ground follow
+        float airStopFollowDistance = 16.0F;  // Stop trying to get closer when within 16 blocks
+        float airStartFollowDistance = 12.0F; // Start moving if further than 12 blocks (must be < stop distance)
+        float airMaxRangeTeleport = 45.0F;   // If further than 45 blocks AND stuck, consider teleport
+        float airTeleportToOffset = 4.0F;    // Teleport to about 4 blocks from owner
+
+        goalAdder.accept(pokemonEntity, 2, new PokemonAirFollowGoal(
+                pokemonEntity,
+                airFollowSpeed,
+                airStopFollowDistance,
+                airStartFollowDistance,
+                airMaxRangeTeleport,
+                airTeleportToOffset
+        ));
         goalAdder.accept(pokemonEntity, 3, new PokemonAvoidGoal(pokemonEntity, PokemonUtils.getAttackRadius() * 3, 1.0f, fleeSpeed));
         goalAdder.accept(pokemonEntity, 4, new PokemonPanicGoal(pokemonEntity, fleeSpeed));
     }

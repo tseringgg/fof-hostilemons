@@ -1,0 +1,22 @@
+{
+  "message_id": "flamethrowerStream",
+  "exhaustion": 0.05,
+  "scaling": "when_caused_by_living_non_player",
+  "effects": "burning",
+  "death_message_type": "default",
+  "bypasses_invulnerability": true,
+  "bypasses_armor": false,
+  "bypasses_effects": false,
+  "bypasses_magic": false,
+  "bypasses_enchantments": false,
+  "is_explosion": false,
+  "is_fire": true,
+  "is_magic": true,
+  "is_projectile": false,
+  "is_unblockable": false,
+  "is_lightning": false,
+  "is_fall": false,
+  "is_drowning": false,
+  "is_starvation": false,
+  "is_freeze": false
+}

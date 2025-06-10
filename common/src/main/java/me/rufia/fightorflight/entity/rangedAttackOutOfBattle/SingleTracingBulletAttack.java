@@ -8,9 +8,13 @@ import me.rufia.fightorflight.utils.PokemonUtils;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SingleTracingBulletAttack extends PokemonRangedAttack {
-    public SingleTracingBulletAttack(){}
+    public SingleTracingBulletAttack(PokemonEntity owner, LivingEntity target) {
+        super(owner, target);
+    }
+
     @Override
-    public void performRangedAttack(PokemonEntity pokemonEntity, LivingEntity target) {
+    public void performRangedAttack() {
+        PokemonEntity pokemonEntity = this.owner;
 //        CobblemonFightOrFlight.LOGGER.info("Ranged Attack Type: Tracing Bullet Move");
         Move move = PokemonUtils.getRangeAttackMove(pokemonEntity);
         AbstractPokemonProjectile bullet;

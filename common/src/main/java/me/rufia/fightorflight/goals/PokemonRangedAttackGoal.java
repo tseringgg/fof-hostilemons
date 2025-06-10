@@ -204,34 +204,19 @@ public class PokemonRangedAttackGoal extends PokemonAttackGoal {
         }
         CobblemonFightOrFlight.LOGGER.info("Attempt SUCCESS, starting attack.");
         isAttacking = true;
-        if(target == null) {
-            CobblemonFightOrFlight.LOGGER.info("No target found: Canceled Ranged Attack");
-            return;
-        }
-        Move move = PokemonUtils.getRangeAttackMove(this.pokemonEntity);
-        String moveName = move.getName();
-        var rangedAttack = PokemonRangedAttack.createPokemonRangedAttack(moveName);
 
-        CobblemonFightOrFlight.LOGGER.info("Performing Ranged Attack:" + moveName);
+        var rangedAttack = PokemonRangedAttack.createPokemonRangedAttack(this.pokemonEntity, target);
 
-        PokemonUtils.sendAnimationPacket(pokemonEntity, "special");
+        rangedAttack.performRangedAttack();
+//        var timeline = triggerActionEffectTimeline(pokemonEntity, target);
 
-        var timeline = triggerActionEffectTimeline(pokemonEntity, target); // Call ActionEffectTimeline for Cobblemon Animation
+        float duration = rangedAttack.getDuration();
 
-        // FightOrFlight ranged attack
-        float delay = (float)(1.15);
-
-        Function0<Unit> delayedAction = () -> {
-            rangedAttack.performRangedAttack(pokemonEntity, target);
-            return null;
-        };
-        pokemonEntity.after(delay, delayedAction);
-        timeline.whenComplete((s, e) ->{
+        var future = pokemonEntity.delayedFuture(duration);
+        future.whenComplete((s, e)->{
             isAttacking = false;
-            CobblemonFightOrFlight.LOGGER.info("timeline completed, isAttacking: " + isAttacking);
         });
     }
-
     private static CompletableFuture<Unit> triggerActionEffectTimeline(PokemonEntity pokemonEntity, LivingEntity target) {
         if(target == null) {
             CobblemonFightOrFlight.LOGGER.info("No target found: Canceled ActionEffect");
@@ -278,4 +263,5 @@ public class PokemonRangedAttackGoal extends PokemonAttackGoal {
 
         return actionEffect.run(context);
     }
+
 }

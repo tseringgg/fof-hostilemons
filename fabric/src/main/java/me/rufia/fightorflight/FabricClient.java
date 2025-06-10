@@ -8,6 +8,8 @@ import me.rufia.fightorflight.client.model.HostileMonsModelLayers;
 import me.rufia.fightorflight.client.model.PokemonFireballModel;
 import me.rufia.fightorflight.client.renderer.*;
 import me.rufia.fightorflight.entity.EntityFightOrFlight;
+import me.rufia.fightorflight.net.ClientNetworkRegistry;
+import me.rufia.fightorflight.net.FabricClientNetworkRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -22,6 +24,8 @@ import net.minecraft.core.registries.Registries;
 public final class FabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        ClientNetworkRegistry clientNetworkRegistry = new FabricClientNetworkRegistry();
+        clientNetworkRegistry.registerClientReceivers();
         EntityRendererRegistry.register(EntityFightOrFlight.TRACING_BULLET.get(), PokemonTracingBulletRenderer::new);
         EntityRendererRegistry.register(EntityFightOrFlight.ARROW_PROJECTILE.get(), PokemonArrowRenderer::new);
         EntityRendererRegistry.register(EntityFightOrFlight.BULLET.get(), PokemonBulletRenderer::new);

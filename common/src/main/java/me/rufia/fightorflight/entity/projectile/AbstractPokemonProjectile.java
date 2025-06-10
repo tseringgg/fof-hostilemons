@@ -4,7 +4,6 @@ import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import me.rufia.fightorflight.entity.PokemonAttackEffect;
 import me.rufia.fightorflight.utils.PokemonUtils;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Objects;
 
@@ -28,13 +28,19 @@ public abstract class AbstractPokemonProjectile extends ThrowableProjectile {
 
     protected void initPosition(LivingEntity shooter) {
         this.setOwner(shooter);
-        BlockPos blockPos = shooter.blockPosition();
-        float angle = shooter.getYRot();
+        var shooterPos = shooter.position();
+        float angle = (float)Math.toRadians(shooter.getYRot());
         //CobblemonFightOrFlight.LOGGER.info(String.valueOf(angle));
+        double forwardOffsetDistance = shooter.getBbWidth() * 1.3;// + 1.2; // Half width + a small fixed distance
+        Vec3 lookDirection = shooter.getViewVector(1.0f);
+        Vec3 spawnPosition = shooterPos.add(lookDirection.scale(forwardOffsetDistance));
         double radius = 0.5 * shooter.getBbWidth();
-        double d = (double) blockPos.getX() + 0.5 - radius * Math.sin(angle);
-        double e = (double) blockPos.getY() + Math.max(0.3f, shooter.getBbHeight() * 0.67);
-        double f = (double) blockPos.getZ() + 0.5 + radius * Math.cos(angle);
+//        double d = shooterPos.x;// - radius * Math.sin(angle);
+//        double e = shooterPos.y + Math.max(0.3f, shooter.getBbHeight() * 0.67);
+//        double f = shooterPos.z + radius * Math.cos(angle);
+        double d = spawnPosition.x;
+        double e = shooterPos.y + Math.max(0.3f, shooter.getBbHeight() * 0.4);
+        double f = spawnPosition.z;
         this.moveTo(d, e, f, this.getYRot(), this.getXRot());
     }
 

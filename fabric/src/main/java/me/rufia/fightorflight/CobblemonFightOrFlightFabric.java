@@ -5,6 +5,8 @@ import me.rufia.fightorflight.entity.EntityFightOrFlight;
 import me.rufia.fightorflight.event.EntityLoadHandler;
 import me.rufia.fightorflight.item.ItemFightOrFlight;
 import me.rufia.fightorflight.mixin.MobEntityAccessor;
+import me.rufia.fightorflight.net.ClientNetworkRegistry;
+import me.rufia.fightorflight.net.FabricClientNetworkRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
