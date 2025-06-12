@@ -108,7 +108,7 @@ public class PokemonAttackEffect {
 
     public static float calculatePokemonDamage(PokemonEntity pokemonEntity, Entity target, boolean isSpecial, float movePower, ElementalType type) {
         int attack = isSpecial ? pokemonEntity.getPokemon().getSpecialAttack() : pokemonEntity.getPokemon().getAttack();
-        CobblemonFightOrFlight.LOGGER.info("Attacking Pokemon attack stat: " + attack);
+//        CobblemonFightOrFlight.LOGGER.info("Attacking Pokemon attack stat: " + attack);
         int maxStat = isSpecial ? CobblemonFightOrFlight.commonConfig().maximum_special_attack_stat : CobblemonFightOrFlight.commonConfig().maximum_attack_stat;
         boolean isUsingRangeAttack = PokemonUtils.shouldShoot(pokemonEntity);
         boolean isUsingMeleeAttack = PokemonUtils.shouldMelee(pokemonEntity);//Status moves might not be any of them in the future?
@@ -126,7 +126,7 @@ public class PokemonAttackEffect {
             multiplier *= CobblemonFightOrFlight.moveConfig().indirect_attack_move_power_multiplier;
         }
         float value = Math.min(Math.max(multiplier * (moveModifier * attackModifier + mobEffectBoost), minDmg), maxDmg);
-        CobblemonFightOrFlight.LOGGER.info("value:{} minDmg:{} maxDmg:{} attack:{} attackModifier:{} moveModifier:{} multiplier:{}", value, minDmg, maxDmg, attack, attackModifier, moveModifier, multiplier);
+//        CobblemonFightOrFlight.LOGGER.info("value:{} minDmg:{} maxDmg:{} attack:{} attackModifier:{} moveModifier:{} multiplier:{}", value, minDmg, maxDmg, attack, attackModifier, moveModifier, multiplier);
         return value;
     }
 

@@ -3,6 +3,7 @@ package me.rufia.fightorflight.entity.rangedAttackOutOfBattle;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import com.cobblemon.mod.common.pokemon.activestate.InactivePokemonState;
 import com.ibm.icu.text.MessagePattern;
 import me.rufia.fightorflight.CobblemonFightOrFlight;
 import me.rufia.fightorflight.entity.PokemonAttackEffect;
@@ -79,6 +80,10 @@ public class ParticleStreamAttack extends PokemonRangedAttack {
         if (level.isClientSide() /* || !(level instanceof ServerLevel) - this check is better done by the network handler */) {
             return;
         }
+        if(attackerPokemon.getPokemon().getState() instanceof InactivePokemonState) {
+            CobblemonFightOrFlight.LOGGER.info("Pokemon was recalled, inhale animation cancelled.");
+            return;
+        }
 
         CobblemonFightOrFlight.LOGGER.info("FoF Common: {} starting chargeAttack visual via NetworkHandler.", attackerPokemon.getPokemon().getSpecies().getName());
 
@@ -98,11 +103,23 @@ public class ParticleStreamAttack extends PokemonRangedAttack {
     private void shootBullets() {
         PokemonEntity attackerPokemon = this.owner;
         LivingEntity target = this.target;
+
+
+
         Move move = PokemonUtils.getRangeAttackMove(attackerPokemon);
         for(int i = 0; i < 40; i++) {
+            if(attackerPokemon.getBeamMode() != 0) {
+//                CobblemonFightOrFlight.LOGGER.info("Pokemon was recalled, ParticleStreamAttack cancelled.");
+                break;
+            }
+
             Random random = new Random();
             attackerPokemon.after(i*0.03F, () -> {
                 Vec3 aimDirection;
+                if(attackerPokemon.getBeamMode() != 0) {
+//                    CobblemonFightOrFlight.LOGGER.info("Pokemon was recalled, ParticleStreamAttack cancelled.");
+                    return null;
+                }
                 if(!attackerPokemon.isAttackable()) {
                     return null;
                 }

@@ -79,7 +79,7 @@ public class PokemonAirFollowGoal extends FollowOwnerGoal {
             return false;
         }
 
-        if (!canPokemonFlyEffectively(this.pokemon)) { // Your corrected helper method
+        if (! canPokemonFlyEffectively(this.pokemon)) { // Your corrected helper method
             CobblemonFightOrFlight.LOGGER.debug("AirFollowGoal: {} cannot fly effectively.", pokemon.getPokemon().getSpecies().getName());
             return false;
         }

@@ -1,6 +1,7 @@
 package me.rufia.fightorflight.goals;
 
 import com.bedrockk.molang.runtime.MoLangRuntime;
+import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.molang.MoLangFunctions;
 import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.api.moves.MoveTemplate;
@@ -134,6 +135,7 @@ public class PokemonRangedAttackGoal extends PokemonAttackGoal {
             this.pokemonEntity.getNavigation().stop();
             ++strafingTime;
         } else {
+            CobblemonFightOrFlight.LOGGER.info(this.pokemonEntity.getPokemon().getSpecies().getName() + " is trying to fly towards " + this.target.getName());
             this.pokemonEntity.getNavigation().moveTo(this.target, this.speedModifier);
             strafingTime = -1;
         }

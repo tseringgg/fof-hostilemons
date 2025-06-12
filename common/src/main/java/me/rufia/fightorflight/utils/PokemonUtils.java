@@ -59,6 +59,8 @@ public class PokemonUtils {
     }
 
     public static boolean shouldFightTarget(PokemonEntity pokemonEntity) {
+//        if(pokemonEntity.getTarget() != null)
+//            CobblemonFightOrFlight.LOGGER.info(pokemonEntity.getTarget().getName() + " is the current target.");
         if (pokemonEntity.getPokemon().getLevel() < CobblemonFightOrFlight.commonConfig().minimum_attack_level) {
             return false;
         }

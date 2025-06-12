@@ -126,6 +126,22 @@ public abstract class PokemonEntityMixin extends Mob implements PokemonInterface
         return super.getTarget();
     }
 
+    @Override
+    public boolean canAttackType(EntityType<?> targetType) {
+        // `thisAsPokemonEntity` is the instance of PokemonEntity this method is called on.
+        PokemonEntity thisAsPokemonEntity = (PokemonEntity)(Object)this;
+        boolean thisCanFly = thisAsPokemonEntity.getBehaviour().getMoving().getFly().getCanFly();
+
+        if (targetType == EntityType.GHAST) {
+            CobblemonFightOrFlight.LOGGER.info("Target is a GHAST.");
+            if (thisCanFly) {
+                return true;
+            }
+            CobblemonFightOrFlight.LOGGER.info("Attacker cannot fly.");
+        }
+        return super.canAttackType(targetType);
+    }
+
     @Inject(method = "registerGoals", at = @At("TAIL"))
     protected void registerFOFGoals(CallbackInfo ci) {
         PokemonEntity pokemonEntity = (PokemonEntity) (Object) this;

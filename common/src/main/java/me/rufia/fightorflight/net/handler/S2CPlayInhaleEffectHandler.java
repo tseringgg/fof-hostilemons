@@ -32,6 +32,7 @@ public class S2CPlayInhaleEffectHandler { // No need to implement NetworkPacketH
         }
 
         Entity entity = clientLevel.getEntity(packet.getPokemonEntityId());
+
         if (entity instanceof PokemonEntity sourcePokemon && entity instanceof PosableEntity) {
             PosableState posableState = (PosableState) ((PosableEntity) sourcePokemon).getDelegate();
             if (posableState == null) {

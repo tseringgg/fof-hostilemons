@@ -151,11 +151,11 @@ public class InvisibleFlamethrowerHitProjectile extends AbstractPokemonProjectil
             // --- Apply Damage ---
             float damageAmount = DAMAGE_ON_HIT; // Half a heart per hit
 
-            CobblemonFightOrFlight.LOGGER.info("FoF Projectile: Applying {} damage to {} from {} via {}",
-                    damageAmount, target.getName().getString(),
-                    attacker != null ? attacker.getName().getString() : "Unknown Attacker",
-                    HostilemonsDamageTypes.FLAMETHROWER_STREAM.location());
-            CobblemonFightOrFlight.LOGGER.info("DamageSourceType: {}", customDamageSource.typeHolder().unwrapKey().map(ResourceKey::location).orElse(ResourceLocation.withDefaultNamespace("unknown")));
+//            CobblemonFightOrFlight.LOGGER.info("FoF Projectile: Applying {} damage to {} from {} via {}",
+//                    damageAmount, target.getName().getString(),
+//                    attacker != null ? attacker.getName().getString() : "Unknown Attacker",
+//                    HostilemonsDamageTypes.FLAMETHROWER_STREAM.location());
+//            CobblemonFightOrFlight.LOGGER.info("DamageSourceType: {}", customDamageSource.typeHolder().unwrapKey().map(ResourceKey::location).orElse(ResourceLocation.withDefaultNamespace("unknown")));
             boolean damaged = target.hurt(customDamageSource, damageAmount);
 
             if (damaged) {
@@ -165,9 +165,9 @@ public class InvisibleFlamethrowerHitProjectile extends AbstractPokemonProjectil
                 if (world.getRandom().nextFloat() < 0.1f) { // 10% chance to set on fire
                     target.setRemainingFireTicks(5); // Burn for 3 seconds
                 }
-                CobblemonFightOrFlight.LOGGER.info("FoF Projectile: {} took damage.", target.getName().getString());
+//                CobblemonFightOrFlight.LOGGER.info("FoF Projectile: {} took damage.", target.getName().getString());
             } else {
-                CobblemonFightOrFlight.LOGGER.info("FoF Projectile: {} did NOT take damage (maybe immune, or hurt returned false).", target.getName().getString());
+//                CobblemonFightOrFlight.LOGGER.info("FoF Projectile: {} did NOT take damage (maybe immune, or hurt returned false).", target.getName().getString());
             }
 
 //            this.discard(); // Remove projectile after attempting to deal damage
